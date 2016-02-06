@@ -69,10 +69,6 @@ public class UserManager {
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public void register(@RequestBody UserEntity user, HttpServletResponse response, HttpSession session) throws IOException {
-        System.out.println("register");
-        System.out.println("username: " + user.getUsername());
-        System.out.println("password: " + user.getPassword());
-
         if (users.containsKey(user.getUsername())){
             response.sendError(409);
             return;
