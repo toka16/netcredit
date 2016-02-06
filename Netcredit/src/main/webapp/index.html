@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Login</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script>
+            (function () {
+                angular
+                        .module('login', [])
+                        .controller('LoginController', function ($scope, $http) {
+                            $scope.data = {};
+                            $scope.data.username = "";
+                            $scope.data.password = "";
+
+                            $scope.login = function () {
+                                $http({
+                                    method: 'POST',
+                                    data: $scope.data,
+                                    url: '/user/login'
+                                }).then(function (response) {
+                                    window.location = "/home.html";
+                                }, function (err) {
+                                    alert("invalid username or password");
+                                });
+                            };
+                        });
+
+            })();
+        </script>
+    </head>
+
+    <body ng-app="login" ng-controller="LoginController">
+        <div class="col-md-6 col-md-offset-3">
+            <h2>Login</h2>
+            <form name="form" role="form" ng-submit="login()">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" ng-model="data.username" required />
+                    <!--<span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>-->
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" ng-model="data.password" required />
+                    <!--<span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>-->
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Login</button>
+                    <a href="/register.html" class="btn btn-link">Register</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
+
