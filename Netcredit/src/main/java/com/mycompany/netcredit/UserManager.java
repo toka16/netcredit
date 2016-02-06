@@ -52,10 +52,7 @@ public class UserManager {
     public void login(@RequestBody Map<String, String> params, HttpServletResponse responce, HttpSession session) {
 //        UserEntity user = userRepo.findByUsername(params.get("username"));
         UserEntity user = users.get(params.get("username"));
-//        UserEntity user = new UserEntity();
-//        user.setUsername(params.get("username"));
-//        user.setPassword(params.get("password"));
-//        user.setBirthDate(new Date());
+        
         if (user.getPassword().equals(params.get("password"))) {
             session.setAttribute("user", user);
         } else {
@@ -75,6 +72,7 @@ public class UserManager {
         }
         
         session.setAttribute("user", user);
+        
         users.put(user.getUsername(), user);
 //        userRepo.save(user);
     }
@@ -84,7 +82,6 @@ public class UserManager {
 
         UserEntity current = (UserEntity) session.getAttribute("user");
         if (current == null) {
-            System.out.println("user is null");
             response.sendError(300);
             return "/";
         }
@@ -94,25 +91,19 @@ public class UserManager {
             if (!current.getUsername().equals(user.getUsername())){
                 users.remove(current.getUsername());
             }
+            
             users.put(user.getUsername(), user);
 //            userRepo.save(user);
         } else {
             System.out.println("password doesn't match");
-            response.setStatus(406);
+            response.setStatus(405);
         }
         return "";
     }
 
     @RequestMapping(value = "/user/current/logout", method = RequestMethod.POST)
-    public String logout(HttpServletResponse response, HttpSession session) {
+    public void logout(HttpServletResponse response, HttpSession session) {
         session.removeAttribute("user");
-        try {
-            response.sendError(300);
-            return "/home/home.html";
-        } catch (IOException ex) {
-            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "";
     }
 
 }
